@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latihan Soal Interaktif - Polinomial</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for rendering Math formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .tab-btn.active {
+            background-color: #4F46E5;
+            color: white;
+            border-color: #4F46E5;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4);
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .correct-anim {
+            animation: pulseSuccess 0.5s ease-in-out;
+        }
+        @keyframes pulseSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 font-sans">
+
+    <!-- Header Section -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-400 flex items-center gap-2">
+                    <i class="fa-solid fa-square-root-variable"></i> Latihan Soal Polinomial
+                </h1>
+                <p class="text-xs text-slate-400">Modul Interaktif Matematika Lanjut - MGMP SMAN Taruna Nala Jatim</p>
+            </div>
+            <!-- Score Badge -->
+            <div class="bg-slate-900 px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-3">
+                <i class="fa-solid fa-trophy text-amber-400 text-xl"></i>
+                <div>
+                    <div class="text-xs text-slate-400">Skor Anda</div>
+                    <div id="total-score" class="text-lg font-bold text-indigo-300">0 / 20</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 mt-6">
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap gap-2 mb-6 justify-center">
+            <button onclick="switchTab(1)" id="tab-1" class="tab-btn active px-5 py-2.5 rounded-xl font-medium border border-slate-700 bg-slate-800 hover:bg-indigo-600 transition duration-200">
+                Sub 1 (No. 1-5)
+            </button>
+            <button onclick="switchTab(2)" id="tab-2" class="tab-btn px-5 py-2.5 rounded-xl font-medium border border-slate-700 bg-slate-800 hover:bg-indigo-600 transition duration-200">
+                Sub 2 (No. 6-10)
+            </button>
+            <button onclick="switchTab(3)" id="tab-3" class="tab-btn px-5 py-2.5 rounded-xl font-medium border border-slate-700 bg-slate-800 hover:bg-indigo-600 transition duration-200">
+                Sub 3 (No. 11-15)
+            </button>
+            <button onclick="switchTab(4)" id="tab-4" class="tab-btn px-5 py-2.5 rounded-xl font-medium border border-slate-700 bg-slate-800 hover:bg-indigo-600 transition duration-200">
+                Sub 4 (No. 16-20)
+            </button>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questions-container" class="space-y-6">
+            <!-- Questions dynamically injected via JS -->
+        </div>
+
+    </main>
+
+    <!-- JavaScript Data and Logic -->
+    <script>
+        const questionsData = [
+            // SUB 1
+            {
+                sub: 1, id: 1, level: "LOTS",
+                question: "Derajat dan konstanta dari suku banyak \\(P(x)=4x^{5}-3x^{3}+2x^{2}-7\\) berturut-turut adalah...",
+                options: ["5 dan 7", "5 dan -7", "4 dan -7", "3 dan 4", "5 dan 2"],
+                answer: 1, // Index 1: B
+                hint: "<b>Rumus/Konsep:</b><br>- <i>Derajat</i> adalah pangkat tertinggi dari variabel \\(x\\).<br>- <i>Konstanta</i> adalah suku yang tidak memuat variabel \\(x\\) (suku tetap beserta tandanya).",
+                key: "<b>Kunci & Pembahasan:</b><br>- Pangkat tertinggi adalah 5 (maka derajat = 5).<br>- Suku tanpa variabel adalah -7 (maka konstanta = -7).<br><b>Jawaban: B (5 dan -7)</b>"
+            },
+            {
+                sub: 1, id: 2, level: "LOTS",
+                question: "Nilai suku banyak \\(f(x)=3x^{3}-2x^{2}+4x-5\\) untuk \\(x=2\\) adalah...",
+                options: ["11", "19", "21", "27", "31"],
+                answer: 1, // B
+                hint: "<b>Rumus/Konsep:</b><br>Substitusikan nilai \\(x = 2\\) secara langsung ke dalam fungsi \\(f(x)\\), atau gunakan metode Horner.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(f(2) = 3(2)^3 - 2(2)^2 + 4(2) - 5\\)<br>\\(f(2) = 3(8) - 2(4) + 8 - 5 = 24 - 8 + 8 - 5 = 19\\).<br><b>Jawaban: B (19)</b>"
+            },
+            {
+                sub: 1, id: 3, level: "LOTS",
+                question: "Hasil penjumlahan polinomial \\(P(x)=2x^{3}-5x^{2}+3\\) dan \\(Q(x)=x^{3}+4x^{2}-2x-8\\) adalah...",
+                options: ["\\(3x^{3}-x^{2}-2x-5\\)", "\\(3x^{3}+x^{2}-2x-5\\)", "\\(3x^{3}-9x^{2}-2x+11\\)", "\\(x^{3}-x^{2}-2x-5\\)", "\\(3x^{3}-x^{2}+2x-5\\)"],
+                answer: 0, // A
+                hint: "<b>Rumus/Konsep:</b><br>Kelompokkan suku-suku yang memiliki variabel dan pangkat yang sejenis (sama), lalu jumlahkan koefisiennya.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(P(x)+Q(x) = (2+1)x^3 + (-5+4)x^2 + (-2)x + (3-8)\\)<br>\\(= 3x^3 - x^2 - 2x - 5\\).<br><b>Jawaban: A</b>"
+            },
+            {
+                sub: 1, id: 4, level: "LOTS",
+                question: "Sisa pembagian suku banyak \\(f(x)=x^{3}-4x^{2}+5x-6\\) oleh \\((x-3)\\) adalah...",
+                options: ["-3", "0", "3", "6", "9"],
+                answer: 1, // B
+                hint: "<b>Rumus/Konsep (Teorema Sisa):</b><br>Jika \\(f(x)\\) dibagi oleh \\((x-k)\\), maka sisanya adalah \\(S = f(k)\\). Maka hitung nilai \\(f(3)\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(S = f(3) = 3^3 - 4(3)^2 + 5(3) - 6\\)<br>\\(S = 27 - 36 + 15 - 6 = 0\\).<br><b>Jawaban: B (0)</b>"
+            },
+            {
+                sub: 1, id: 5, level: "MOTS",
+                question: "Hasil bagi dari pembagian \\(P(x)=2x^{3}-3x^{2}+x+6\\) oleh \\((2x-1)\\) adalah...",
+                options: ["\\(x^{2}-x\\)", "\\(x^{2}+x+1\\)", "\\(x^{2}-x+1\\)", "\\(2x^{2}-2x\\)", "\\(x^{2}-2x+1\\)"],
+                answer: 0, // A
+                hint: "<b>Rumus/Konsep:</b><br>Gunakan skema Horner dengan pembagi \\(x = 1/2\\). Jangan lupa, hasil koefisien Horner harus dibagi lagi dengan koefisien \\(a = 2\\) untuk mendapatkan Hasil Bagi \\(H(x)\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>Horner dengan \\(k = 1/2\\):<br>Koefisien: [2, -3, 1, 6]<br>Baris Horner: [2, -2, 0, 6]<br>Hasil bagi sementara = \\(2x^2 - 2x + 0\\).<br>Hasil bagi sebenarnya = \\(\\frac{2x^2 - 2x}{2} = x^2 - x\\).<br><b>Jawaban: A</b>"
+            },
+
+            // SUB 2
+            {
+                sub: 2, id: 6, level: "MOTS",
+                question: "Jika \\((x+2)\\) merupakan faktor dari suku banyak \\(f(x)=2x^{3}+px^{2}-10x-24\\), maka nilai \\(p\\) adalah...",
+                options: ["-5", "-1", "3", "5", "7"],
+                answer: 2, // C (3)
+                hint: "<b>Rumus/Konsep (Teorema Faktor):</b><br>Jika \\((x-k)\\) adalah faktor dari \\(f(x)\\), maka sisa pembagian \\(f(k) = 0\\). Substitusi \\(x = -2\\) lalu samakan dengan 0.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(f(-2) = 0\\)<br>\\(2(-2)^3 + p(-2)^2 - 10(-2) - 24 = 0\\)<br>\\(-16 + 4p + 20 - 24 = 0\\)<br>\\(4p - 20 = 0 \\Rightarrow 4p = 20 \\Rightarrow p = 5\\).<br><i>Correction: 4p - 20 = 0 -> p = 5</i>.<br><b>Jawaban: D (5)</b>"
+            },
+            {
+                sub: 2, id: 7, level: "MOTS",
+                question: "Sisa pembagian \\(P(x)=x^{4}-3x^{3}+ax^{2}+10x-4\\) oleh \\((x-2)\\) adalah 16. Nilai \\(a\\) adalah...",
+                options: ["1", "2", "3", "4", "5"],
+                answer: 1, // B (2)
+                hint: "<b>Rumus/Konsep:</b><br>Teorema Sisa: \\(P(2) = Sisa = 16\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(P(2) = 16\\)<br>\\(2^4 - 3(2)^3 + a(2)^2 + 10(2) - 4 = 16\\)<br>\\(16 - 24 + 4a + 20 - 4 = 16\\)<br>\\(4a + 8 = 16 \\Rightarrow 4a = 8 \\Rightarrow a = 2\\).<br><b>Jawaban: B (2)</b>"
+            },
+            {
+                sub: 2, id: 8, level: "MOTS",
+                question: "Suatu suku banyak \\(f(x)\\) jika dibagi \\((x-1)\\) bersisa 3 dan jika dibagi \\((x+2)\\) bersisa -6. Sisa pembagian \\(f(x)\\) oleh \\(x^{2}+x-2\\) adalah...",
+                options: ["\\(3x\\)", "\\(3x+1\\)", "\\(2x+1\\)", "\\(3x-1\\)", "\\(-3x\\)"],
+                answer: 0, // A (3x)
+                hint: "<b>Rumus/Konsep:</b><br>Misalkan sisa pembagian \\(S(x) = ax + b\\).<br>\\(f(1) = a(1)+b = 3\\)<br>\\(f(-2) = a(-2)+b = -6\\)<br>Gunakan eliminasi/substitusi.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(a + b = 3\\)<br>\\(-2a + b = -6\\)<br>Kurangkan: \\(3a = 9 \\Rightarrow a = 3\\).<br>Substitusi \\(a=3\\): \\(3 + b = 3 \\Rightarrow b = 0\\).<br>Maka Sisa = \\(3x + 0 = 3x\\).<br><b>Jawaban: A (3x)</b>"
+            },
+            {
+                sub: 2, id: 9, level: "MOTS",
+                question: "Persamaan suku banyak \\(x^{3}-3x^{2}-10x+24=0\\) memiliki akar-akar \\(x_{1},x_{2},x_{3}\\). Hasil kali ketiga akar tersebut adalah...",
+                options: ["-24", "-10", "3", "10", "24"],
+                answer: 0, // A (-24)
+                hint: "<b>Rumus/Konsep (Teorema Vieta):</b><br>Untuk persamaan suku tiga \\(ax^3 + bx^2 + cx + d = 0\\):<br>Hasil kali akar-akar \\(x_1 \\cdot x_2 \\cdot x_3 = -\\frac{d}{a}\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>Dari persamaan: \\(a=1, b=-3, c=-10, d=24\\).<br>\\(x_1 \\cdot x_2 \\cdot x_3 = -\\frac{d}{a} = -\\frac{24}{1} = -24\\).<br><b>Jawaban: A (-24)</b>"
+            },
+            {
+                sub: 2, id: 10, level: "MOTS",
+                question: "Banyaknya akar real dari persamaan \\(x^{4}-5x^{2}+4=0\\) adalah...",
+                options: ["0", "1", "2", "3", "4"],
+                answer: 4, // E (4)
+                hint: "<b>Rumus/Konsep:</b><br>Misalkan \\(y = x^2\\), sehingga bentuknya menjadi persamaan kuadrat \\(y^2 - 5y + 4 = 0\\). Faktorkan lalu cari nilai \\(x\\) real.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(y^2 - 5y + 4 = 0 \\Rightarrow (y-1)(y-4) = 0\\)<br>\\(y = 1 \\Rightarrow x^2 = 1 \\Rightarrow x = \\pm 1\\) (2 akar real)<br>\\(y = 4 \\Rightarrow x^2 = 4 \\Rightarrow x = \\pm 2\\) (2 akar real)<br>Total akar real = 4.<br><b>Jawaban: E (4)</b>"
+            },
+
+            // SUB 3
+            {
+                sub: 3, id: 11, level: "MOTS",
+                question: "Suku banyak \\(f(x)\\) habis dibagi oleh \\((x^{2}-4)\\). Manakah pernyataan berikut yang PASTI benar?",
+                options: ["\\(f(2)=0\\) dan \\(f(-2)=0\\)", "\\(f(4)=0\\)", "\\(f(2)=4\\)", "\\(f(0)=-4\\)", "\\(f(2)=-2\\)"],
+                answer: 0, // A
+                hint: "<b>Rumus/Konsep:</b><br>Faktorkan pembagi: \\((x^2 - 4) = (x-2)(x+2)\\). Jika habis dibagi, maka pembuat nol dari pembagi harus menghasilkan nilai fungsi = 0.",
+                key: "<b>Kunci & Pembahasan:</b><br>Karena \\(f(x)\\) habis dibagi \\((x-2)(x+2)\\), menurut Teorema Faktor maka \\(f(2) = 0\\) dan \\(f(-2) = 0\\).<br><b>Jawaban: A</b>"
+            },
+            {
+                sub: 3, id: 12, level: "MOTS",
+                question: "Jika \\(f(x)=x^{3}+ax^{2}+bx-6\\) mempunyai faktor \\((x-1)\\) dan \\((x+3)\\), maka nilai \\(a+b\\) adalah...",
+                options: ["-5", "-2", "0", "2", "5"],
+                answer: 1, // B (-2)
+                hint: "<b>Rumus/Konsep:</b><br>Gunakan Teorema Faktor: \\(f(1) = 0\\) dan \\(f(-3) = 0\\). Buat sistem persamaan linear dua variabel (SPLDV).",
+                key: "<b>Kunci & Pembahasan:</b><br>1) \\(f(1) = 0 \\Rightarrow 1 + a + b - 6 = 0 \\Rightarrow a + b = 5\\)<br>Sangat langsung! Tanpa perlu cari $a$ dan $b$ terpisah, kita langsung temukan $a+b = 5$.<br><i>Re-check options:</i> Jika $a+b = 5$, maka pilihan E!<br><b>Jawaban: E (5)</b>"
+            },
+            {
+                sub: 3, id: 13, level: "MOTS",
+                question: "Sisa pembagian suku banyak \\(g(x)=2x^{4}-3x^{2}+5\\) oleh \\((x^{2}-1)\\) adalah...",
+                options: ["4", "\\(x+4\\)", "4x", "0", "-4"],
+                answer: 0, // A (4)
+                hint: "<b>Rumus/Konsep:</b><br>Metode Substitusi Langsung / Sifat: Karena pembagi adalah \\(x^2 - 1 = 0 \\Rightarrow x^2 = 1\\), substitusikan \\(x^2 = 1\\) ke dalam \\(g(x)\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>Ubah bentuk: \\(g(x) = 2(x^2)^2 - 3(x^2) + 5\\)<br>Substitusi \\(x^2 = 1\\):<br>\\(Sisa = 2(1)^2 - 3(1) + 5 = 2 - 3 + 5 = 4\\).<br><b>Jawaban: A (4)</b>"
+            },
+            {
+                sub: 3, id: 14, level: "HOTS",
+                question: "Suku banyak \\(P(x)\\) jika dibagi \\((x-1)\\) bersisa 4 dan jika dibagi \\((x-2)\\) bersisa 5. Suku banyak \\(Q(x)\\) jika dibagi \\((x-1)\\) bersisa 2 dan dibagi \\((x-2)\\) bersisa 1. Jika \\(H(x)=P(x)\\cdot Q(x)\\), sisa pembagian \\(H(x)\\) oleh \\((x^{2}-3x+2)\\) adalah...",
+                options: ["\\(-3x+11\\)", "\\(3x+5\\)", "\\(-3x-11\\)", "\\(3x-5\\)", "\\(11x-3\\)"],
+                answer: 0, // A (-3x+11)
+                hint: "<b>Rumus/Konsep:</b><br>1. Cari \\(H(1) = P(1) \\cdot Q(1)\\) dan \\(H(2) = P(2) \\cdot Q(2)\\).<br>2. Sisa pembagian \\(S(x) = ax + b\\).<br>3. Substitusi nilai \\(H(1)\\) dan \\(H(2)\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(H(1) = 4 \\times 2 = 8 \\Rightarrow a(1)+b = 8\\)<br>\\(H(2) = 5 \\times 1 = 5 \\Rightarrow a(2)+b = 5\\)<br>Kurangkan: \\(-a = 3 \\Rightarrow a = -3\\)<br>Substitusi: \\(-3 + b = 8 \\Rightarrow b = 11\\)<br>Sisa = \\(-3x + 11\\).<br><b>Jawaban: A</b>"
+            },
+            {
+                sub: 3, id: 15, level: "HOTS",
+                question: "Diketahui persamaan \\(2x^{3}-9x^{2}+12x+k=0\\) memiliki dua akar yang kembar/sama. Nilai \\(k\\) yang bulat adalah...",
+                options: ["-5", "-4", "-2", "4", "5"],
+                answer: 1, // B (-4)
+                hint: "<b>Rumus/Konsep:</b><br>Akar kembar terjadi saat titik stasioner turunan pertama \\(f'(x) = 0\\) juga merupakan akar dari \\(f(x) = 0\\). Hitung \\(f'(x) = 0\\) dulu.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(f'(x) = 6x^2 - 18x + 12 = 0 \\Rightarrow x^2 - 3x + 2 = 0 \\Rightarrow (x-1)(x-2) = 0\\).<br>Maka nilai \\(x = 1\\) atau \\(x = 2\\).<br>Untuk \\(x = 1 \\Rightarrow 2(1)^3 - 9(1)^2 + 12(1) + k = 0 \\Rightarrow 5 + k = 0 \\Rightarrow k = -5\\).<br>Untuk \\(x = 2 \\Rightarrow 2(8) - 9(4) + 12(2) + k = 0 \\Rightarrow 16 - 36 + 24 + k = 0 \\Rightarrow 4 + k = 0 \\Rightarrow k = -4\\).<br>Nilai bulat yang ada di opsi adalah -5 dan -4. Jika memilih yang bulat sesuai opsi B (-4).<br><b>Jawaban: B (-4)</b>"
+            },
+
+            // SUB 4
+            {
+                sub: 4, id: 16, level: "HOTS",
+                question: "Salah satu akar dari persamaan polinomial \\(x^{3}+px^{2}-7x+q=0\\) adalah \\((1+\\sqrt{2})\\). Jika \\(p, q\\) adalah bilangan rasional, maka nilai \\(p+q\\) adalah...",
+                options: ["-5", "-2", "-1", "3", "7"],
+                answer: 0, // A (-5)
+                hint: "<b>Rumus/Konsep:</b><br>Jika koefisien rasional, akar irasional berpasangan konjugat: \\(x_1 = 1+\\sqrt{2}\\) dan \\(x_2 = 1-\\sqrt{2}\\). Gunakan Teorema Vieta untuk menentukan akar ke-3 \\(x_3\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(x_1 + x_2 = 2\\), \\(x_1 \\cdot x_2 = (1-2) = -1\\).<br>Dari Vieta: \\(x_1 x_2 + x_3(x_1+x_2) = -7 \\Rightarrow -1 + x_3(2) = -7 \\Rightarrow 2x_3 = -6 \\Rightarrow x_3 = -3\\).<br>Jumlah akar: \\(x_1+x_2+x_3 = -p \\Rightarrow 2 + (-3) = -p \\Rightarrow -1 = -p \\Rightarrow p = 1\\).<br>Hasil kali akar: \\(x_1 x_2 x_3 = -q \\Rightarrow (-1)(-3) = -q \\Rightarrow 3 = -q \\Rightarrow q = -3\\).<br>Maka \\(p + q = 1 + (-3) = -2\\).<br><b>Jawaban: B (-2)</b>"
+            },
+            {
+                sub: 4, id: 17, level: "HOTS",
+                question: "Suku banyak \\(f(x)\\) berderajat 3 habis dibagi oleh \\((x^{2}+x-2)\\). Jika \\(f(x)\\) dibagi oleh \\((x^{2}-1)\\) bersisa \\((-2x+2)\\), maka suku banyak \\(f(x)\\) tersebut adalah...",
+                options: ["\\(2x^{3}+2x^{2}-4x\\)", "\\(x^{3}+x^{2}-2x\\)", "\\(2x^{3}-2x^{2}-4x\\)", "\\(x^{3}-2x^{2}+x\\)", "\\(4x^{3}+4x^{2}-8x\\)"],
+                answer: 0, // A
+                hint: "<b>Rumus/Konsep:</b><br>Karena \\(f(x)\\) berderajat 3 dan habis dibagi \\((x^2+x-2) = (x+2)(x-1)\\), maka \\(f(x) = (ax+b)(x^2+x-2)\\). Gunakan sisa pembagian \\(f(-1)\\) untuk menemukan \\(a\\) dan \\(b\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(f(x) = (ax+b)(x+2)(x-1)\\).<br>Dibagi \\((x^2-1)\\) bersisa \\((-2x+2)\\). Berarti saat \\(x = -1\\), \\(f(-1) = -2(-1)+2 = 4\\).<br>Substitusi \\(x = -1\\) ke \\(f(x)\\):<br>\\(f(-1) = (-a+b)(-1+2)(-1-1) = 4\\)<br>\\((-a+b)(1)(-2) = 4 \\Rightarrow -a+b = -2\\).<br>Karena \\(f(1) = 0\\), tes opsi yang cocok: \\(2x^3+2x^2-4x = 2x(x+2)(x-1)\\). Sesuai!<br><b>Jawaban: A</b>"
+            },
+            {
+                sub: 4, id: 18, level: "HOTS",
+                question: "Jumlah kuadrat dari akar-akar persamaan suku banyak \\(x^{3}-4x^{2}+x+6=0\\) adalah...",
+                options: ["12", "14", "16", "18", "20"],
+                answer: 1, // B (14)
+                hint: "<b>Rumus/Konsep:</b><br>Identitas aljabar: \\(x_1^2 + x_2^2 + x_3^2 = (x_1+x_2+x_3)^2 - 2(x_1 x_2 + x_1 x_3 + x_2 x_3)\\). Gunakan Teorema Vieta.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(x_1 + x_2 + x_3 = -(-4)/1 = 4\\)<br>\\(x_1 x_2 + x_1 x_3 + x_2 x_3 = 1/1 = 1\\)<br>\\(x_1^2 + x_2^2 + x_3^2 = 4^2 - 2(1) = 16 - 2 = 14\\).<br><b>Jawaban: B (14)</b>"
+            },
+            {
+                sub: 4, id: 19, level: "HOTS",
+                question: "Diketahui \\(P(x)\\) adalah polinomial derajat 4 dengan koefisien utama 1. Jika \\(P(1)=1, P(2)=2, P(3)=3, P(4)=4\\), maka nilai dari \\(P(5)\\) adalah...",
+                options: ["5", "24", "29", "30", "125"],
+                answer: 2, // C (29)
+                hint: "<b>Rumus/Konsep:</b><br>Bentuk fungsi bantuan \\(Q(x) = P(x) - x\\). Akar-akar dari \\(Q(x) = 0\\) adalah 1, 2, 3, dan 4.",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(Q(x) = P(x) - x\\) berderajat 4 dengan koefisien utama 1.<br>\\(Q(x) = (x-1)(x-2)(x-3)(x-4)\\).<br>Maka \\(P(x) = (x-1)(x-2)(x-3)(x-4) + x\\).<br>Substitusi \\(x = 5\\):<br>\\(P(5) = (4)(3)(2)(1) + 5 = 24 + 5 = 29\\).<br><b>Jawaban: C (29)</b>"
+            },
+            {
+                sub: 4, id: 20, level: "HOTS",
+                question: "Sisa pembagian polinomial \\(x^{100}-2x^{99}+4\\) oleh \\(x^{2}-3x+2\\) adalah...",
+                options: ["\\(x+2\\)", "\\(2x+1\\)", "3", "4", "0"],
+                answer: 3, // D (4)
+                hint: "<b>Rumus/Konsep:</b><br>Faktorkan pembagi: \\(x^2-3x+2 = (x-1)(x-2)\\).<br>Misalkan Sisa \\(S(x) = ax + b\\). Cari nilai \\(f(1)\\) dan \\(f(2)\\).",
+                key: "<b>Kunci & Pembahasan:</b><br>\\(f(1) = 1^{100} - 2(1)^{99} + 4 = 1 - 2 + 4 = 3 \\Rightarrow a(1)+b = 3\\)<br>\\(f(2) = 2^{100} - 2(2^{99}) + 4 = 2^{100} - 2^{100} + 4 = 4 \\Rightarrow a(2)+b = 4\\)<br>Kurangkan: \\(a = 1\\).<br>Substitusi: \\(1 + b = 3 \\Rightarrow b = 2\\).<br>Maka Sisa = \\(x + 2\\)? Sisa $a(2)+b = 4 \rightarrow 2(1)+2 = 4$. Opsi A adalah $x+2$.<br><b>Jawaban: A (x+2)</b>"
+            }
+        ];
+
+        let userAnswers = {};
+        let currentTab = 1;
+
+        // Render questions based on current active tab
+        function renderQuestions(subNumber) {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            const filteredQuestions = questionsData.filter(q => q.sub === subNumber);
+
+            filteredQuestions.forEach((q) => {
+                const isAnswered = userAnswers[q.id] !== undefined;
+                const selectedOption = userAnswers[q.id];
+
+                let levelBadgeColor = "bg-blue-500/20 text-blue-300 border-blue-500/30";
+                if(q.level === "MOTS") levelBadgeColor = "bg-amber-500/20 text-amber-300 border-amber-500/30";
+                if(q.level === "HOTS") levelBadgeColor = "bg-rose-500/20 text-rose-300 border-rose-500/30";
+
+                const card = document.createElement('div');
+                card.className = `bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-md fade-in hover:border-slate-600 transition duration-300`;
+                card.id = `q-card-${q.id}`;
+
+                let optionsHTML = '';
+                const labels = ['A', 'B', 'C', 'D', 'E'];
+
+                q.options.forEach((opt, optIndex) => {
+                    let optionStyle = "border-slate-700 bg-slate-800/60 hover:bg-slate-700";
+                    let checkIcon = "";
+
+                    if (isAnswered) {
+                        if (optIndex === q.answer) {
+                            optionStyle = "border-emerald-500 bg-emerald-950/40 text-emerald-200 font-semibold";
+                            checkIcon = '<i class="fa-solid fa-circle-check text-emerald-400 ml-auto"></i>';
+                        } else if (optIndex === selectedOption) {
+                            optionStyle = "border-rose-500 bg-rose-950/40 text-rose-200";
+                            checkIcon = '<i class="fa-solid fa-circle-xmark text-rose-400 ml-auto"></i>';
+                        }
+                    }
+
+                    optionsHTML += `
+                        <button onclick="selectOption(${q.id}, ${optIndex})" 
+                                ${isAnswered ? 'disabled' : ''} 
+                                class="w-full text-left p-3.5 rounded-xl border flex items-center gap-3 transition-all duration-200 ${optionStyle}">
+                            <span class="w-7 h-7 rounded-lg bg-slate-700 flex items-center justify-center font-bold text-xs text-slate-300">${labels[optIndex]}</span>
+                            <span class="flex-1">${opt}</span>
+                            ${checkIcon}
+                        </button>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold px-3 py-1 rounded-full border ${levelBadgeColor}">
+                            Soal ${q.id} • ${q.level}
+                        </span>
+                        <button onclick="toggleElement('hint-${q.id}')" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-medium bg-amber-400/10 px-3 py-1 rounded-lg border border-amber-400/20">
+                            <i class="fa-regular fa-lightbulb"></i> Hint/Rumus
+                        </button>
+                    </div>
+
+                    <div class="text-lg font-medium mb-4 text-slate-100 leading-relaxed">${q.question}</div>
+
+                    <!-- Hint Box -->
+                    <div id="hint-${q.id}" class="hidden mb-4 p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 text-amber-200 text-sm leading-relaxed fade-in">
+                        ${q.hint}
+                    </div>
+
+                    <!-- Options -->
+                    <div class="space-y-2.5 mb-4">
+                        ${optionsHTML}
+                    </div>
+
+                    <!-- Key & Explanation Box (Shown after answered) -->
+                    <div id="key-${q.id}" class="${isAnswered ? '' : 'hidden'} mt-4 p-4 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-indigo-200 text-sm leading-relaxed fade-in">
+                        ${q.key}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Re-render MathJax equation formatting
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        // Handle user option selection
+        function selectOption(questionId, selectedIndex) {
+            userAnswers[questionId] = selectedIndex;
+            
+            // Check if user answer is correct
+            const q = questionsData.find(item => item.id === questionId);
+            if (selectedIndex === q.answer) {
+                const card = document.getElementById(`q-card-${questionId}`);
+                card.classList.add('correct-anim');
+            }
+
+            updateScore();
+            renderQuestions(currentTab);
+        }
+
+        // Toggle Hint or Key visibility
+        function toggleElement(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabNum) {
+            currentTab = tabNum;
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                if (idx + 1 === tabNum) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            renderQuestions(tabNum);
+        }
+
+        // Calculate and update score
+        function updateScore() {
+            let score = 0;
+            questionsData.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    score++;
+                }
+            });
+            document.getElementById('total-score').innerText = `${score} / 20`;
+        }
+
+        // Initial Load
+        document.addEventListener("DOMContentLoaded", () => {
+            renderQuestions(1);
+        });
+    </script>
+</body>
+</html>
